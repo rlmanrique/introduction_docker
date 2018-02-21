@@ -1,0 +1,4 @@
+FROM alpine 
+COPY temp.txt /temp
+WORKDIR /temp
+RUN source temp.txt

@@ -1,3 +1,7 @@
+AP: Title and description
+AP: Topics
+AP: Documentation and guides
+
 # Introduction to Docker
 
 ## Session one
@@ -20,15 +24,13 @@
 
 ### Hands-on [50 mins]
 
-* Install Docker
-* Configure it [Ericsson ready]
-* Run hello world
+Homework Install Docker
+Homework Configure it [Ericsson ready]"
+Homework Run hello world
+
 * Create a script that prints a random number every second
 * Create a Dockerfile
 * Run the Docker image
-
-Provide a VM with Ubuntu and guide with the steps.
-Doubt: Provide the VM with Docker installed?
 
 ## Session two
 
@@ -52,3 +54,4 @@ Doubt: Provide the VM with Docker installed?
 * Deploy several containers (random number generator, influxdb and grafana)
 
 Max 2 groups: 8 hours + 5-6 preparation
+
