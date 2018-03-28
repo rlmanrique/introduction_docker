@@ -115,7 +115,7 @@ def main():
         if (response == INFLUX_FAILURE_CODE) or (response != INFLUX_SUCCESS_CODE):
             print("Error sending measure to database, err=" + str(reason))
             continue
-        print("Measure " + measure + " has been stored in the database")
+        print("Measure " + str(measure) + " has been stored in the database")
                
 ######################################################################################################
 

@@ -1,0 +1,35 @@
+version: "3"
+networks:
+  data:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+services:
+  messenger:
+    container_name: messenger_compose
+    image: messenger
+    volumes:
+      - /home/erodrlo/introduction_docker/session2/measur.txt:/app/measure.txt
+    command: ["-F", "/app/measure.txt", "-I", "influxdb_compose:8086"]
+    networks:
+      data:
+  influxdb:
+    container_name: influxdb_compose
+    image: influxdb
+    volumes:
+      - /home/erodrlo/introduction_docker/session2:/var/lib/influxdb
+      - /home/erodrlo/introduction_docker/session2/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+    command: ["-config", "/etc/influxdb/influxdb.conf"]
+    networks:
+      data:    
+  grafana:
+    container_name: grafana_compose
+    image: grafana/grafana:4.6.2
+    environment:
+      - GF_SERVER_ROOT_URL=http://localhost
+      - GF_SECURITY_ADMIN_PASSWORD=secret
+    ports:
+      - 3000:3000
+    networks:
+      data:
