@@ -1,0 +1,123 @@
+#!/usr/bin/env python3
+import sys
+import calendar
+import time
+import argparse
+import http.client, urllib.parse
+import re
+
+######################################################################################################
+### --- Global --- ###
+
+INFLUX_SUCCESS_CODE = 204
+INFLUX_FAILURE_CODE = 0
+
+INTERVAL_TIME = 2
+
+######################################################################################################
+### --- Classes --- ###
+class Context(object):
+    def __init__(self):
+
+        # Influx
+        self.influx_host   = "localhost:8086"
+        self.influx_table  = "random_numbers"
+        self.influx_random = "random"
+        self.influx_tags   = ",reader=reader1" # Note: They have to start with ,
+
+        self.file_path = '/app/measures.txt'
+
+######################################################################################################
+### --- Functions --- ###
+
+def get_cmd_args(context):
+    opts = argparse.ArgumentParser()
+
+    opts.add_argument('--influx', '-I',
+                      default = context.influx_host,
+                      dest = 'influx_host',
+                      help = 'Influx address:port')
+    opts.add_argument('--influx-table', '-T',
+                      default = context.influx_table,
+                      dest = 'influx_table',
+                      help = 'Influx table')
+
+    opts.add_argument('--file', '-F',
+                      default = context.file_path,
+                      dest = 'file_path',
+                      help = 'Absolute file path')
+
+    args = opts.parse_args()
+
+    context.influx_host  = args.influx_host
+    context.influx_table = args.influx_table
+
+    context.file_path = args.file_path
+
+    return True
+
+######################################################################################################
+
+def read_measure(context):
+    try:
+        f = open(context.file_path)
+        s = f.readline()
+        i = int(s.strip())
+    except IOError as e:
+        return '', "I/O error({0}): {1}".format(e.errno, e.strerror)
+    except ValueError:
+        return '', "Could not convert data to an integer."
+    except:
+        return '',"Unexpected error:", sys.exc_info()[0]
+    return i, ''
+
+######################################################################################################
+
+def send_data(context, measure):
+
+    try:
+        conn = http.client.HTTPConnection(context.influx_host)
+    except:
+        return INFLUX_FAILURE_CODE, 'Error: unable to connect to influxDB'
+
+    method = "POST"
+    action = "/write?db=" + context.influx_table
+
+    measurement_type = context.influx_random
+    tags             = context.influx_tags
+    data   = measurement_type + tags + ' value=' + str(measure) 
+
+    headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
+
+    try:
+        conn.request(method, action, data , headers)
+        response = conn.getresponse()
+        return response.status, response.reason
+    except:
+        return INFLUX_FAILURE_CODE, 'Error: unable to send data to influxDB'
+
+######################################################################################################
+
+def main():
+    context = Context()
+    if not get_cmd_args(context):
+        return
+
+    while True:
+        time.sleep(INTERVAL_TIME)
+        
+        measure, err = read_measure(context)
+        if err != '':
+            print("Error reading measure, err=" + err)
+            continue
+
+        response, reason  = send_data(context, measure)
+        if (response == INFLUX_FAILURE_CODE) or (response != INFLUX_SUCCESS_CODE):
+            print("Error sending measure to database, err=" + str(reason))
+            continue
+        print("Measure " + measure + " has been stored in the database")
+               
+######################################################################################################
+
+if __name__ == "__main__":
+    main()
