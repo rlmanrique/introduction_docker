@@ -47,6 +47,14 @@ docker image rm $(docker image ls -a -q)   # Remove all images from this machine
 
 docker image inspect <image id>
 
+## Networking
+
+docker network create --driver <bridge/host/mcvlan/overlay> network_name
+docker network ls
+docker network inspect <network>
+docker run ... --network <network_name>
+
+
 ## Repository
 
 docker login             # Log in this CLI session using your Docker credentials
