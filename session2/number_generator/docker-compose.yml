@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  generatorr:
+    container_name: number_generator
+    tty: true
+    image: generator:1.3
+
