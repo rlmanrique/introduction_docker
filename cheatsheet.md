@@ -30,7 +30,11 @@ docker logs <container_id>
 docker pause <container_id>
 docker unpause <container_id>
 docker container stop <container_id>           # Gracefully stop the specified container
+
 docker start <container_id>
+docker stop <container_id>
+docker stop -f <container_id>
+
 docker container kill <container_id>         # Force shutdown of the specified container
 docker container rm <container_id>        # Remove specified container from this machine
 docker container rm $(docker container ls -a -q)         # Remove all containers
