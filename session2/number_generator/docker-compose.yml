@@ -4,5 +4,5 @@ services:
   generatorr:
     container_name: number_generator
     tty: true
-    image: generator:1.3
+    image: generator:2.0
 

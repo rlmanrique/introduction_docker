@@ -8,6 +8,14 @@ networks:
 volumes:
   mydata:
 services:
+  generator:
+    container_name: number_generator
+    tty: true
+    image: number_generator:2.0
+    volumes:
+      - type: volume
+        source: mydata
+        target: /data
   messenger:
     container_name: messenger_compose
     image: messenger:3.0
