@@ -63,6 +63,7 @@ def read_measure(context):
         f = open(context.file_path)
         s = f.readline()
         i = int(s.strip())
+        f.close()
     except IOError as e:
         return '', "I/O error({0}): {1}".format(e.errno, e.strerror)
     except ValueError:

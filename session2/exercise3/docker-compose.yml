@@ -1,23 +1,31 @@
-version: "3"
+version: "3.2"
 networks:
   data:
     driver: bridge
     ipam:
       config:
         - subnet: 172.30.0.0/24
+volumes:
+  mydata:
 services:
   generator:
     container_name: number_generator
     tty: true
-    image: generator:1.3
+    image: number_generator:2.0
     volumes:
-      - /home/erodrlo/introduction_docker/session2/number_generator:/app/measure.txt
+      - type: volume
+        source: mydata
+        target: /data
+      #- /home/erodrlo/introduction_docker/session2/number_generator:/app
   messenger:
     container_name: messenger_compose
-    image: messenger
+    image: messenger:3.0
     volumes:
-      - /home/erodrlo/introduction_docker/session2/measur.txt:/app/measure.txt
-    command: ["-F", "/app/measure.txt", "-I", "influxdb_compose:8086"]
+       - type: volume
+         source: mydata
+         target: /data
+      #- /home/erodrlo/introduction_docker/session2/number_generator/measure.txt:/app/measure.txt
+    command: ["-F", "/data/measure.txt", "-I", "influxdb_compose:8086"]
     networks:
       data:
   influxdb:
