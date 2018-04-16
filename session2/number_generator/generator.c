@@ -9,7 +9,7 @@ int main(){
   srand(time(NULL));
 
   while(1){
-    f = fopen("number.txt", "w");
+    f = fopen("measure.txt", "w");
     int number = rand() % 100;
     printf("%d\n", number);
     fprintf(f, "%d\n", number);

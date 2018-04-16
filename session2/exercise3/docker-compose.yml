@@ -6,6 +6,12 @@ networks:
       config:
         - subnet: 172.30.0.0/24
 services:
+  generator:
+    container_name: number_generator
+    tty: true
+    image: generator:1.3
+    volumes:
+      - /home/erodrlo/introduction_docker/session2/number_generator:/app/measure.txt
   messenger:
     container_name: messenger_compose
     image: messenger
@@ -18,8 +24,8 @@ services:
     container_name: influxdb_compose
     image: influxdb
     volumes:
-      - /home/erodrlo/introduction_docker/session2:/var/lib/influxdb
-      - /home/erodrlo/introduction_docker/session2/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+      - /home/erodrlo/introduction_docker/session2/exercise3:/var/lib/influxdb
+      - /home/erodrlo/introduction_docker/session2//exercise3/influxdb.conf:/etc/influxdb/influxdb.conf:ro
     command: ["-config", "/etc/influxdb/influxdb.conf"]
     networks:
       data:    

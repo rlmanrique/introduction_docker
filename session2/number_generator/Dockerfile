@@ -6,6 +6,6 @@ COPY generator.c .
 RUN gcc --static -o gen generator.c
 
 FROM alpine
-WORKDIR /app
+WORKDIR /data
 COPY --from=builder /build/gen .
 CMD ["./gen"]
