@@ -8,9 +8,19 @@ networks:
 volumes:
   mydata:
 services:
+  generator:
+    container_name: number_generator
+    build: ../number_generator
+    image: number_generator
+    tty: true
+    volumes:
+      - type: volume
+        source: mydata
+        target: /data
   messenger:
     container_name: messenger_compose
-    image: messenger:3.0
+    build: ../messenger
+    image: messenger
     volumes:
        - type: volume
          source: mydata
