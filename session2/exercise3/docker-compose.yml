@@ -33,10 +33,10 @@ services:
     image: influxdb
     volumes:
       - /home/erodrlo/introduction_docker/session2/exercise3:/var/lib/influxdb
-      - /home/erodrlo/introduction_docker/session2//exercise3/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+      - /home/erodrlo/introduction_docker/session2/exercise3/influxdb.conf:/etc/influxdb/influxdb.conf:ro
     command: ["-config", "/etc/influxdb/influxdb.conf"]
     networks:
-      data:    
+      data:
   grafana:
     container_name: grafana_compose
     image: grafana/grafana:4.6.2

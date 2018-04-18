@@ -19,7 +19,7 @@ docker exec -it --name <name> /bin/bash  ## Open a console in the container
 
 docker ps
 docker ps -a
-docker container ls                                
+docker container ls
 docker container ls -a
 
 ## Lifecycle
