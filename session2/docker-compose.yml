@@ -1,0 +1,17 @@
+version: "3"
+services:
+  influxdb:
+    container_name: influxdb_compose
+    image: influxdb
+    volumes:
+      - /home/pi/influxdb:/var/lib/influxdb
+      - /home/pi/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+    command: ["-config", "/etc/influxdb/influxdb.conf"]
+  grafana:
+    container_name: grafana_compose
+    image: fg2it/grafana-armhf:v4.6.2
+    environment:
+      - GF_SERVER_ROOT_URL=http://localhost
+      - GF_SECURITY_ADMIN_PASSWORD=secret
+    ports:
+      - 3000:3000
